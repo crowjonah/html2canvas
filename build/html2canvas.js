@@ -259,8 +259,6 @@ GradientContainer.prototype.TYPES = {
     RADIAL: 2
 };
 
-GradientContainer.prototype.angleRegExp = /([+-]?\d*\.?\d+)(deg|grad|rad|turn)/;
-
 function ImageContainer(src, cors) {
     this.src = src;
     this.image = new Image();
@@ -270,6 +268,13 @@ function ImageContainer(src, cors) {
         self.image.onerror = reject;
         if (cors) {
             self.image.crossOrigin = "anonymous";
+        }
+        if (!(/\.(gif|jpg|jpeg|tiff|png|svg)$/i).test(src))
+        {
+            var dummy = new DummyImageContainer(src);
+            return dummy.promise.then(function(image) {
+                self.image = image;
+            });
         }
         self.image.src = src;
         if (self.image.complete === true) {
@@ -377,7 +382,7 @@ ImageLoader.prototype.fetch = function(nodes) {
 };
 
 function isImage(container) {
-    return container.node.nodeName === "IMG";
+    return container.node.nodeName && (container.node.nodeName === "IMG" || container.node.nodeName === "IMAGE") && (/\.(gif|jpg|jpeg|tiff|png|svg)$/i).test(container.node.src);
 }
 
 function urlImage(container) {

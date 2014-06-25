@@ -10,6 +10,7 @@ function ImageContainer(src, cors) {
         }
         if (!(/\.(gif|jpg|jpeg|tiff|png|svg)$/i).test(src))
         {
+            var dummy = new DummyImageContainer(src);
             return dummy.promise.then(function(image) {
                 self.image = image;
             });
