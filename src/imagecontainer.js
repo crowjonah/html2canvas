@@ -8,6 +8,12 @@ function ImageContainer(src, cors) {
         if (cors) {
             self.image.crossOrigin = "anonymous";
         }
+        if (!(/\.(gif|jpg|jpeg|tiff|png|svg)$/i).test(src))
+        {
+            return dummy.promise.then(function(image) {
+                self.image = image;
+            });
+        }
         self.image.src = src;
         if (self.image.complete === true) {
             resolve(self.image);

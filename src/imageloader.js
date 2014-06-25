@@ -92,7 +92,7 @@ ImageLoader.prototype.fetch = function(nodes) {
 };
 
 function isImage(container) {
-    return container.node.nodeName === "IMG";
+    return container.node.nodeName && (container.node.nodeName === "IMG" || container.node.nodeName === "IMAGE") && (/\.(gif|jpg|jpeg|tiff|png|svg)$/i).test(container.node.src);
 }
 
 function urlImage(container) {
